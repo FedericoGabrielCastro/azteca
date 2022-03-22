@@ -1,5 +1,5 @@
 <p align="center">
-    <img width="200px" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Ftech.courses%2Ftensorflow-js-react-native%2F&psig=AOvVaw34NFEtzIw3t4XfDWwcx6Fy&ust=1648002859410000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCNiw153X2PYCFQAAAAAdAAAAABAZ" alt="Hotel Alkemy" />
+    <img width="200px" src="https://www.tensorflow.org/site-assets/images/project-logos/tensorflow-js-logo-social.png?hl=es-419" alt="TensorFLow" />
     <hr width="100%"/>
     <h1 align="center">TensorFlow with React.js</h1>
 </p>
