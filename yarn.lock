@@ -1688,6 +1688,13 @@
     "@tensorflow-models/blazeface" "0.0.5"
     "rimraf" "^3.0.2"
 
+"@tensorflow-models/handpose@0.0.6":
+  "integrity" "sha512-nUqNXmBKTZ14YFZJNj+0G26/CZnjP2t8yIeCiB73x+p1ROeQsqzKG55X8cQupBJsizNoZr4ayq5XRb3NivDfKA=="
+  "resolved" "https://registry.npmjs.org/@tensorflow-models/handpose/-/handpose-0.0.6.tgz"
+  "version" "0.0.6"
+  dependencies:
+    "rimraf" "^3.0.2"
+
 "@tensorflow/tfjs-backend-cpu@2.8.6":
   "integrity" "sha512-x9WTTE9p3Pon2D0d6HH1UCIJsU1w3v9sF3vxJcp+YStrjDefWoW5pwxHCckEKTRra7GWg3CwMKK3Si2dat4H1A=="
   "resolved" "https://registry.npmjs.org/@tensorflow/tfjs-backend-cpu/-/tfjs-backend-cpu-2.8.6.tgz"

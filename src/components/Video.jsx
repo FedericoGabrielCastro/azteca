@@ -2,9 +2,11 @@ import React, {useEffect, useRef} from 'react'
 import { useStyles } from '../style/components/VideoStyle'
 import "@tensorflow/tfjs"
 import * as facemesh from "@tensorflow-models/facemesh"
+import * as handpose from "@tensorflow-models/handpose"
 import Webcam from "react-webcam"
 
 import { drawMesh } from '../utils/faceTriangulationDrawer'
+import { drawHand } from '../utils/handPrediction'
 
 
 const Video = () => {
@@ -26,6 +28,16 @@ const Video = () => {
         setInterval(() => {
             detect(net)
             console.log("NEW DETECT FACE")
+        }, 1000)
+    }
+
+    // Load hands.
+    const runHandPose = async () => {
+        const net = await handpose.load()
+        // Detect the face every 100 miliseconds
+        setInterval(() => {
+            detect(net)
+            console.log("NEW DETECT HAND")
         }, 100)
     }
 
@@ -47,17 +59,24 @@ const Video = () => {
             // Set canvas width.
             canvasRef.current.width = videoWidth
             canvasRef.current.height = videoHeight
+            
             // Make detections.
-            const face = await net.estimateFaces(video)
-            console.log(face)
+            // const face = await net.estimateFaces(video)
+            const hand = await net.estimateHands(video)
+            // console.log(face)
+            console.log(hand)
+            
             // Get canvas context for drawing.
             const ctx = canvasRef.current.getContext("2d")
-            drawMesh(face, ctx)
+            // drawMesh(face, ctx)
+            drawHand(hand, ctx)
+
         }
     }
 
     useEffect(() => {
-        runFaceMesh()
+        // runFaceMesh()
+        runHandPose()
     })
 
     return (
