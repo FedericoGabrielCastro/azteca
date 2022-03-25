@@ -6,10 +6,12 @@ import "@tensorflow/tfjs"
 import * as facemesh from "@tensorflow-models/facemesh"
 import * as handpose from "@tensorflow-models/handpose"
 import * as posenet from "@tensorflow-models/posenet"
+import * as cocossd from "@tensorflow-models/coco-ssd"
 
-// import { drawMesh } from '../utils/faceTriangulationDrawer'
-// import { drawHand } from '../utils/handPrediction'
-import { drawKeypoints, drawSkeleton } from '../utils/bodyPredictionDraw'
+import { drawMesh } from '../utils/facePredictionDrawer'
+import { drawHand } from '../utils/handPredictionDrawer'
+import { drawRect } from '../utils/objectPredictionDrawer'
+import { drawKeypoints, drawSkeleton } from '../utils/bodyPredictionDrawer'
 
 
 const Video = () => {
@@ -18,34 +20,45 @@ const Video = () => {
     // Setup references.
     const webcamRef = useRef(null)
     const canvasRef = useRef(null) 
+
+    // Load cocossd.
+    const runCoco = async () => {
+        const net = await cocossd.load()
+        
+        // Detect the object every 100 miliseconds
+        setInterval(() => {
+            detect(net)
+            console.log("NEW DETECT OBJECT")
+        }, 1000)
+    }
     
     // Load facemesh.
-    // const runFaceMesh = async () => {
-    //     const net = await facemesh.load({
-    //         inputResolution: {
-    //             width: 640,
-    //             height: 480
-    //         },
-    //          scale: 0.8
-    //     })
+    const runFaceMesh = async () => {
+        const net = await facemesh.load({
+            inputResolution: {
+                width: 640,
+                height: 480
+            },
+             scale: 0.8
+        })
         
-    //     // Detect the face every 100 miliseconds
-    //     setInterval(() => {
-    //         detect(net)
-    //         console.log("NEW DETECT FACE")
-    //     }, 1000)
-    // }
+        // Detect the face every 100 miliseconds
+        setInterval(() => {
+            detect(net)
+            console.log("NEW DETECT FACE")
+        }, 100)
+    }
 
-    // // Load hands.
-    // const runHandPose = async () => {
-    //     const net = await handpose.load()
+    // Load hands.
+    const runHandPose = async () => {
+        const net = await handpose.load()
         
-    //     // Detect the face every 100 miliseconds
-    //     setInterval(() => {
-    //         detect(net)
-    //         console.log("NEW DETECT HAND")
-    //     }, 100)
-    // }
+        // Detect the hand every 100 miliseconds
+        setInterval(() => {
+            detect(net)
+            console.log("NEW DETECT HAND")
+        }, 100)
+    }
 
     // Load posenet.
     const runPosenet = async () => {
@@ -57,7 +70,7 @@ const Video = () => {
             scale: 0.8
         })
         
-        // Detect the face every 100 miliseconds
+        // Detect the body every 100 miliseconds
         setInterval(() => {
             detect(net)
             console.log("NEW DETECT POSE")
@@ -81,20 +94,21 @@ const Video = () => {
             webcamRef.current.video.height = videoHeight
 
             // Set canvas width.
-            // canvasRef.current.width = videoWidth
-            // canvasRef.current.height = videoHeight
+            canvasRef.current.width = videoWidth
+            canvasRef.current.height = videoHeight
             
             // Make detections.
             // const face = await net.estimateFaces(video)
             // const hand = await net.estimateHands(video)
-            const pose = await net.estimateSinglePose(video)
-            console.log(pose)
+            // const pose = await net.estimateSinglePose(video)
+            const object = await net.detect(video)
 
             // Get canvas context for drawing.
-            // const ctx = canvasRef.current.getContext("2d")
+            const ctx = canvasRef.current.getContext("2d")
             // drawMesh(face, ctx)
             // drawHand(hand, ctx)
-            drawCanvas(pose, video, videoWidth, videoHeight, canvasRef)
+            drawRect(object, ctx)
+            // drawCanvas(pose, video, videoWidth, videoHeight, canvasRef)
 
         }
     }
@@ -113,19 +127,20 @@ const Video = () => {
     useEffect(() => {
         // runFaceMesh()
         // runHandPose()
-        runPosenet()
+        // runPosenet()
+        // runCoco()
     })
 
     return (
         <div>
             <Webcam 
-                    ref={webcamRef}
-                    className={classes.webcam}
-                />
-                <canvas 
-                    ref={canvasRef}
-                    className={classes.canvasWebcam}
-                />
+                ref={webcamRef}
+                className={classes.webcam}
+            />
+            <canvas 
+                ref={canvasRef}
+                className={classes.canvasWebcam}
+            />
         </div>
     )
 }

@@ -11,9 +11,9 @@ export const useStyles = makeStyles(({
         gap: "10vh"
     },
     titleApp: {
-        fontSize: "calc(2em + 1vw)",
+        fontSize: "calc(3em + 1vw)",
         textAlign: "center",
-        color: "#000",
+        color: "#337",
     },
     buttonsContent: {
         display: "flex",
