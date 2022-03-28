@@ -4,6 +4,7 @@ import AnimatePageRender from '../components/AnimatePageRender'
 
 import * as tf from "@tensorflow/tfjs"
 import * as speech from "@tensorflow-models/speech-commands"
+import RecognizeAudio from '../components/RecognizeAudio'
 
 const AudioPage = () => {
     const classes = useStyles()
@@ -48,22 +49,28 @@ const AudioPage = () => {
 
     return (
         <AnimatePageRender>
-            <main >
-                <section>
-                    <ul>
+            <main className={classes.audioPageContent} >
+                <section className={classes.wordListContent}>
+                    <ul className={classes.ulContent}>
+                        <h1 className={classes.titleList}> Recognizer this words </h1>
                         {
-                            labels.map((item, index) => {
+                            labels.slice(2).map((item, index) => {
                                 return (
-                                    <li className={classes.list} key={index}> {item} </li>
+                                    <li className={classes.list} key={index}> 
+                                        <i> {item} </i>
+                                    </li>
                                 )
                             })
                         }
                     </ul>
                 </section>
-                <aside>
-                    <button onClick={recognizeCommands}>Command</button>
+                <aside className={classes.audioDetectedContent}>
+                    <RecognizeAudio />
+                    {/* <button onClick={recognizeCommands}>Command</button> */}
                     {
-                        action ? <div className={classes.result}>{action}</div>:<div>No Action Detected</div> 
+                        action ? 
+                            <h1 className={classes.showRecognizerLabel}> {action} </h1>
+                            : <i className={classes.showRecognizerLabel}> No Action Detected </i> 
                     }
                 </aside>
                 
