@@ -1,29 +1,24 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useStyles } from '../style/views/AudioPageStyle'
 import AnimatePageRender from '../components/AnimatePageRender'
 
 import * as tf from "@tensorflow/tfjs"
 import * as speech from "@tensorflow-models/speech-commands"
+
 import RecognizeAudio from '../components/RecognizeAudio'
+
+import { setRecognizerSpeechSagaAction } from '../redux/actions/setRecognizerSpeechAction'
 
 const AudioPage = () => {
     const classes = useStyles()
 
-    const [model, setModel] = useState(null)
+    const dispatch = useDispatch()
+
+    const wordModel = useSelector(store => store.setRecognizerSpeechReducer.model) // Load speech model.
+    const wordList = useSelector(store => store.setRecognizerSpeechReducer.wordList) // Load speech model word list.
+
     const [action, setAction] = useState(null)
-    const [labels, setLabels] = useState([])
-
-    // Create recognizer.
-    const loadModel = async () => {
-        const recognizer = await speech.create("BROWSER_FFT")
-        console.log("model loadead")
-
-        await recognizer.ensureModelLoaded()
-        console.log(recognizer.wordLabels()) // Recognizer world
-
-        setModel(recognizer)
-        setLabels(recognizer.wordLabels())
-    }
 
     // Maping values. 
     const argMax = (arr) => {
@@ -34,18 +29,17 @@ const AudioPage = () => {
     const recognizeCommands = async () =>{
         console.log('START RECOGNIZER')
         
-        model.listen( result => {
+        wordModel.listen( result => {
             console.log(result)
-            setAction(labels[argMax(Object.values(result.scores))])
+            setAction(wordList[argMax(Object.values(result.scores))])
         }, 
         {includeSpectrogram:true, probabilityThreshold:0.9})
-        setTimeout( () => model.stopListening(), 20e3 )
-
+        setTimeout( () => wordModel.stopListening(), 20e3 )
     }
 
     useEffect(() => {
-        loadModel()
-    }, [])
+        dispatch(setRecognizerSpeechSagaAction())
+    }, [dispatch, setRecognizerSpeechSagaAction])
 
     return (
         <AnimatePageRender>
@@ -54,7 +48,7 @@ const AudioPage = () => {
                     <ul className={classes.ulContent}>
                         <h1 className={classes.titleList}> Recognizer this words </h1>
                         {
-                            labels.slice(2).map((item, index) => {
+                            wordList.slice(2).map((item, index) => {
                                 return (
                                     <li className={classes.list} key={index}> 
                                         <i> {item} </i>
