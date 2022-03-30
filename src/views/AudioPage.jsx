@@ -17,7 +17,7 @@ const AudioPage = () => {
 
     const wordModel = useSelector(store => store.setRecognizerSpeechReducer.model) // Load speech model.
     const wordList = useSelector(store => store.setRecognizerSpeechReducer.wordList) // Load speech model word list.
-
+    console.log(wordList)
     const [action, setAction] = useState(null)
 
     // Maping values. 

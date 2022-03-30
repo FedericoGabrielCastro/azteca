@@ -1,8 +1,11 @@
 import { select } from 'redux-saga/effects'
 import { store } from '../store'
 
-export const getWordModel = () => store.getState().setRecognizerSpeechReducer.model
+// export const getWordModel = () => {
+//     return store.getState().setRecognizerSpeechReducer.model
+// }
 
-export function* stateRecognizeSpeechSaga() {
+export function* enableRecognizeSpeechSaga() {
     // function recognizeCommands go to be here.
+    console.log("asda")
 }

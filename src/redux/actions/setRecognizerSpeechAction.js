@@ -1,7 +1,6 @@
 import {
     SET_RECOGNIZER_AUDIO_SAGA,
     SET_RECOGNIZER_AUDIO_LOADED,
-    SET_RECOGNIZER_AUDIO_ERROR
 } from '../types'
 
 export const setRecognizerSpeechSagaAction = () => ({

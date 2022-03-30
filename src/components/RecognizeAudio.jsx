@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useStyles } from '../style/components/RecognizeAudioStyle' 
 import { BiMicrophone, BiMicrophoneOff } from 'react-icons/bi'
 
-import { setRecognizerSpeechSagaAction } from '../redux/actions/setRecognizerSpeechAction'
+import { enableRecognizeSpeechSagaAction } from '../redux/actions/enableRecognizeSpeechAction'
 
 const RecognizeAudio = () => {
     const classes = useStyles()
@@ -14,7 +14,7 @@ const RecognizeAudio = () => {
 
     return (
         <div className={classes.content}>
-            <button onClick={() => {dispatch(setRecognizerSpeechSagaAction())}} className={classes.audioRecognizerButton}>
+            <button onClick={() => {dispatch(enableRecognizeSpeechSagaAction())}} className={classes.audioRecognizerButton}>
                 {
                     listenAudio ? 
                     <BiMicrophone className={classes.microAudio} /> 
